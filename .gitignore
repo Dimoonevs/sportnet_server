@@ -43,6 +43,6 @@ Thumbs.db
 
 # None use files
 
-*.docx
-*.code-workspace
+workspace_sportsApp.code-workspace
+Новий Документ Microsoft Word.docx
 /db-data
