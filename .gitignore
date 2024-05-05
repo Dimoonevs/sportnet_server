@@ -43,6 +43,6 @@ Thumbs.db
 
 # None use files
 
-.docx
-.code-workspace
+*.docx
+*.code-workspace
 /db-data
