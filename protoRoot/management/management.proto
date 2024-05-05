@@ -1,0 +1,31 @@
+syntax="proto3";
+
+package management;
+
+option go_package = "management/";
+import "google/protobuf/empty.proto";
+
+service ManagementService {
+    rpc CreateScheduler (ManagementRequest) returns (google.protobuf.Empty) {}
+    rpc DeleteScheduler (DeleteRequest) returns (google.protobuf.Empty) {}
+    rpc UpdateScheduler (ManagementUpdateRequest) returns (google.protobuf.Empty) {}
+}
+
+message ManagementRequest {
+    string timeZone = 1;
+    repeated string daysOfWeek = 2;
+    int32 subscriptionId = 3;
+    repeated string time = 4;
+}
+message DeleteRequest {
+    int32 idScheduler = 1;
+    int32 idCron = 2;
+}
+message ManagementUpdateRequest {
+    int32 idScheduler = 1;
+    string timeZone = 2;
+    repeated string daysOfWeek = 3;
+    repeated string time = 4;
+    int32 idCron = 5;
+    int32 subscriptionId = 6;
+}

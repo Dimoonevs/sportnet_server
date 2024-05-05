@@ -1,0 +1,42 @@
+syntax="proto3";
+
+package groups;
+
+option go_package = "groups/";
+
+service GroupService {
+    rpc CreateGroup (GroupRequest) returns (GroupResponse) {}
+    rpc GetGroups (GetGroupRequest) returns (GetGroupResponse) {}
+    rpc EditGroup (GroupEditRequest) returns (GroupResponse) {}
+}
+
+message GroupRequest {
+    string name = 1;
+    int32 coachId = 2;
+    int32 subscriptionId = 3; 
+}
+
+message GroupResponse {
+    string message = 1;
+    int32 id = 2;
+}
+message GetGroupRequest {
+    int32 coachId = 1;
+}
+message GetGroupResponse {
+    repeated GroupData groups = 1;
+}
+message GroupData {
+    int32 id = 1;
+    string name = 2;
+    int32 coachId = 3;
+    int32 subscriptionId = 4;
+    string subscriptionName = 5;
+    int32 timeLimited = 6;
+    int32 customTimeLimited = 7;
+}
+message GroupEditRequest {
+    int32 id = 1;
+    string name = 2;
+    int32 subscriptionId = 3;
+}

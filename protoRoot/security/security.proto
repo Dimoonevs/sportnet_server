@@ -1,0 +1,100 @@
+syntax="proto3";
+
+package security;
+
+option go_package = "security/";
+
+
+service SecurityService {
+    rpc Login (LoginRequest) returns (LoginResponse) {}
+    rpc Register (RegisterRequest) returns (RegisterResponse) {}
+    rpc Validate (ValidateRequest) returns (Response) {}
+    rpc GetCoachTimeZone (GetCoachTimeZoneRequest) returns (Response) {}
+    rpc ConfirmEmail (ConfirmEmailRequest) returns (Response) {}
+    rpc ResetPassword(ResetPasswordRequest) returns (Response) {}
+    rpc ConfirmResetPassword (ConfirmResetPasswordRequest) returns (Response) {}
+    rpc GetCoach (GetCoachRequest) returns (GetCoachResponse) {}
+    rpc UpdateCoach (CoachData) returns (ValidateRequest) {}
+    rpc ChangeEmail (ChangeEmailReq) returns (Response) {}
+}
+
+message LoginRequest {
+    string username = 1;
+    string email = 2;
+    string password = 3;
+    int32 id = 4;
+}
+
+message LoginResponse {
+    string token = 1;
+    string message = 2;
+    int32 id = 3;
+    string username =4;  
+}
+
+message RegisterRequest {
+    string firstName = 1;
+    string lastName = 2;
+    string email = 3;
+    string username = 4;
+    string password = 5;
+    string dateOfBirth = 6;
+    Status status = 7;
+    string timeZone = 8;
+}
+message RegisterResponse {
+    string message = 1;
+    int32 id = 2;
+}
+enum Status {
+    SPORTSMEN = 0;
+    COACH = 1;
+    ADMIN = 2;
+    SPORTSMEN_AND_COACH = 3;
+}
+
+message Response {
+    string message = 1;
+    int32 id = 2;
+}
+
+message ValidateRequest {
+    string token = 1;
+}
+
+message GetCoachTimeZoneRequest {
+    int32 id = 1;
+}
+message ConfirmEmailRequest {
+    string code = 1;
+    int32 id = 2;
+}
+message ResetPasswordRequest {
+    string email = 1;
+}
+message ConfirmResetPasswordRequest {
+    string code = 1;
+    string password = 2;
+    int32 id = 3;
+}
+message GetCoachRequest {
+    int32 id = 1;
+}
+message CoachData {
+    int32 id = 1;
+    string firstName = 2;
+    string lastName = 3;
+    string username = 5;
+    string dateOfBirth = 7;
+}
+message GetCoachResponse{
+    string firstName = 1;
+    string lastName = 2;
+    string email = 3;
+    string username = 4;
+    string dateOfBirth = 5;
+}
+message ChangeEmailReq{
+    string email = 1;
+    int32 id = 2;
+}

@@ -1,0 +1,135 @@
+version: '3'
+services:
+
+  broker-service:
+    build:
+      context: ./../broker-service
+      dockerfile: ./../broker-service/broker-service.Dockerfile
+    restart: always
+    ports:
+      - "8000:8000"
+    deploy:
+      mode: replicated
+      replicas: 1
+
+  security-service:
+    build:
+      context: ./../security-service
+      dockerfile: ./../security-service/security-service.Dockerfile
+    restart: always
+    ports:
+      - "50001:50001"
+    deploy:
+      mode: replicated
+      replicas: 1
+    environment:
+      DSN: "host=postgres port=5432 user=postgres password=password dbname=subscriptions sslmode=disable connect_timeout=5"
+
+  logger-service:
+    build:
+      context: ./../logger-service
+      dockerfile: ./../logger-service/logger-service.Dockerfile
+    restart: always
+    ports:
+      - "8001:8001"
+    deploy:
+      mode: replicated
+      replicas: 1
+
+  typesubscription-service:
+    build: 
+      context: ./../typesubscription-service
+      dockerfile: ./../typesubscription-service/typesubscription-service.Dockerfile
+    restart: always
+    ports:
+      - "50002:50002"
+    deploy:
+      mode: replicated
+      replicas: 1
+    environment:
+      DSN: "host=postgres port=5432 user=postgres password=password dbname=subscriptions sslmode=disable connect_timeout=5"
+
+  groups-service:
+    build: 
+      context: ./../groups-service
+      dockerfile: ./../groups-service/groups-service.Dockerfile
+    restart: always
+    ports:
+      - "50003:50003"
+    deploy:
+      mode: replicated
+      replicas: 1
+    environment:
+      DSN: "host=postgres port=5432 user=postgres password=password dbname=subscriptions sslmode=disable connect_timeout=5"
+      
+  athletes-service:
+    build: 
+      context: ./../athletes-service
+      dockerfile: ./../athletes-service/athletes-service.Dockerfile
+    restart: always
+    ports:
+      - "50004:50004"
+      - "50014:50014"
+    deploy:
+      mode: replicated
+      replicas: 1
+    environment:
+      DSN: "host=postgres port=5432 user=postgres password=password dbname=subscriptions sslmode=disable connect_timeout=5"
+      ZONEINFO: "/usr/local/go/lib/time/zoneinfo.zip"
+
+  management-service:
+    build: 
+      context: ./../management-service
+      dockerfile: ./../management-service/management-service.Dockerfile
+    restart: always
+    ports:
+      - "50005:50005"
+    deploy:
+      mode: replicated
+      replicas: 1
+    environment:
+      DSN: "host=postgres port=5432 user=postgres password=password dbname=subscriptions sslmode=disable connect_timeout=5"
+      ZONEINFO: "/usr/local/go/lib/time/zoneinfo.zip"
+
+
+  postgres:
+    image: "postgres:14.0"
+    ports:
+      - "5432:5432"
+    restart: always
+    deploy:
+      mode: replicated
+      replicas: 1
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: users
+    volumes:
+    # first create local volume: docker volume create --name pgdata -d local
+      - pgdata:/var/lib/postgresql/data/:Z
+
+
+  mongo:
+    image: "mongo:4.2.16-bionic"
+    ports:
+      - "27017:27017"
+    restart: always
+    environment:
+      MONGO_INITDB_DATABASE: logs
+      MONGO_INITDB_ROOT_USERNAME: admin
+      MONGO_INITDB_ROOT_PASSWORD: password
+    volumes:
+    # first create local volume: docker volume create --name mongo -d local
+      - mongo:/data/db:Z
+
+  redis:
+    image: "redis:latest"
+    ports:
+      - "6379:6379"
+    restart: always
+
+volumes:
+  pgdata:
+    external: true
+  mongo:
+    external: true

@@ -1,0 +1,87 @@
+syntax="proto3";
+
+package subscription;
+
+option go_package = "subscription/";
+
+
+service TypeSubscriptionService {
+    rpc CreateSubscription (SubscriptionRequest) returns (SubscriptionResponse) {}
+    rpc GetAllSubscriptions (GetSubscriptionRequest) returns (GetSubscriptionResponse) {}
+    rpc EditSubscription (SubscriptionEditRequest) returns (SubscriptionResponse) {} 
+}
+
+
+enum TypeSub {
+    FIXED_COUNT = 0;
+    DATE_LIMITED = 1;
+}
+
+enum TimeLimited {
+    WEEK = 0;
+    MONTH = 1;
+    YEAR = 2;
+    CUSTOM = 3;
+}
+message SubscriptionRequest {
+    string name = 1;
+    string description = 2;
+    StatusSubscription statusSubscription = 3;
+    PriceSubscription Price = 4;
+    int32 coachId = 5;
+    repeated string daysOfWeek = 6;
+    bool automaticallyManagement = 7;
+    repeated string time = 8;
+}
+
+message StatusSubscription {
+    TypeSub typeSub = 1;
+    TimeLimited timeLimited = 2;
+    int32 customTimeLimited = 3;
+}
+
+message PriceSubscription {
+    int32 price = 1;
+    string currency = 2;
+}
+
+message SubscriptionResponse {
+    string message = 1;
+    int32 id = 2;
+}
+message GetSubscriptionResponse {
+    repeated SubscriptionData subscriptions = 1;
+}
+
+message GetSubscriptionRequest{
+    int32 coachId = 1;
+}
+message SubscriptionData{
+    int32 id = 1;
+    string name = 2;
+    string description = 3;
+    string typeSub = 4;
+    string timeLimited = 5;
+    int32 customTimeLimited = 6;
+    int32 price = 7;
+    string currency = 8;
+    int32 coachId = 9;
+    repeated string daysOfWeek = 10;
+    bool automaticallyManagement = 11;
+    repeated string time = 12;
+    int32 cronId = 13;
+    int32 idScheduler = 14;
+}
+message SubscriptionEditRequest{
+    string name = 1;
+    string description = 2;
+    StatusSubscription statusSubscription = 3;
+    PriceSubscription Price = 4;
+    int32 coachId = 5;
+    repeated string daysOfWeek = 6;
+    bool automaticallyManagement = 7;
+    repeated string time = 8;
+    int32 cronId = 9;
+    int32 idScheduler = 10;
+    int32 id = 11;
+}

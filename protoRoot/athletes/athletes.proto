@@ -1,0 +1,57 @@
+syntax="proto3";
+
+package athletes;
+
+option go_package = "athletes/";
+
+
+
+service AthleteService {
+    rpc CreateAthlete (AthleteRequest) returns (AthleteResponse) {}
+    rpc GetAthletes (GetAthletesRequest) returns (stream AthleteRequest) {}
+    rpc DeleteAthletes (DeleteAthletesRequest) returns (AthleteResponse) {}
+    rpc EditAthlete (EditAthletesRequest) returns (AthleteResponse) {}
+    rpc AddTraining (AddTrainingRequest) returns (AthleteResponse) {}
+    rpc MinusTrainingOfSubscription (MinusTrainingOfSubscriptionRequest) returns (AthleteResponse) {}
+}
+
+
+message AthleteRequest {
+    string firstName = 1;
+    string lastName = 2;
+    int32 subscriptionId = 3;
+    int32 groupId = 4; 
+    int32 daysLeft = 5;
+    string dateLast = 6;
+    string status = 7;
+    int32 id = 8;
+}
+
+message AthleteResponse {
+    string message = 1;
+}
+
+message GetAthletesRequest{
+    int32 groupId = 1;
+}
+
+message GetAthletesResponse {
+    AthleteRequest athlete = 1;
+}
+message DeleteAthletesRequest{
+    repeated int32 id = 1;
+}
+message EditAthletesRequest{
+    repeated AthleteRequest athlete = 1;
+}
+message TrainingData{
+    int32 id = 1;
+    int32 daysLeft = 2;
+    string dateLast = 3;
+}
+message AddTrainingRequest{
+    repeated TrainingData training = 1;
+}
+message MinusTrainingOfSubscriptionRequest{
+    int32 subcriptionId = 1;
+}
